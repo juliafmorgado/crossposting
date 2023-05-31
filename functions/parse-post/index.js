@@ -115,6 +115,9 @@ const formatHashnodeData = (postDetail, articleCatalog, links, tweets) => {
       input: {
         title: postDetail.data.title,
         contentMarkdown: hashnodeContent,
+        isPartOfPublication: {
+          publicationId: process.env.HASHNODE_PUBLICATION_ID
+        },
         coverImageURL: postDetail.data.image,
         isRepublished: {
           originalArticleURL: `${process.env.BLOG_BASE_URL}/${postDetail.data.slug.replace(/^\/|\/$/g, '')}`
