@@ -6,10 +6,25 @@ exports.handler = async (state) => {
   if (!authToken) {
     throw new Error('Unable to get secret');
   }
-
+try {
   const config = getAxiosConfig(state, authToken);
   const response = await axios.request(config);
   return response.data;
+}
+catch (error) {
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.log(error.response.data);
+    console.log(error.response.status);
+    console.log(error.response.headers);
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    console.log('Error', error.message);
+  }
+  throw error
+}
+
 };
 
 const getAxiosConfig = (state, authToken) => {

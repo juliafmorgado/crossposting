@@ -24,10 +24,14 @@ exports.handler = async (state) => {
 };
 
 const formatMediumData = (postDetail, articleCatalog, links, tweets) => {
-  let mediumContent = `\n# ${postDetail.data.title}\n`
-    + `#### ${postDetail.data.description}\n`
-    + `![${postDetail.data.image_attribution ?? ''}](${postDetail.data.image})\n`
-    + `${postDetail.content.slice(0)}`;
+  let mediumContent = `\n# ${postDetail.data.title}\n`;
+  if (postDetail.data.description) {
+    mediumContent += `#### ${postDetail.data.description}\n`;
+  }
+  if (postDetail.data.image) {
+    mediumContent += `![${postDetail.data.image_attribution ?? ''}](${postDetail.data.image})\n`;
+  }
+  mediumContent += `${postDetail.content.slice(0)}`;
 
   for (const link of links) {
     const replacement = articleCatalog.find(c => c.links.M.url.S == link[1]);
@@ -50,7 +54,7 @@ const formatMediumData = (postDetail, articleCatalog, links, tweets) => {
     contentFormat: 'markdown',
     tags: [...postDetail.data.categories, ...postDetail.data.tags],
     canonicalUrl: `${process.env.BLOG_BASE_URL}/${postDetail.data.slug.replace(/^\/|\/$/g, '')}`,
-    publishStatus: 'draft',
+    publishStatus: 'public',
     notifyFollowers: true,
     content: mediumContent
   };
